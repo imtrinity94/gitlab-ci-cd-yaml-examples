@@ -1,0 +1,11 @@
+send_email:
+    image: alpine
+    before_script:
+        - apk add curl
+    script:
+        - > 
+            curl --request POST
+            --url https://api.sendgrid.com/v3/mail/send
+            --header "Authorization: Bearer $SENDGRID_API_KEY"
+            --header 'Content-Type: application/json'
+            --data "{\"personalizations\":[{\"to\":[{\"email\":\"$GITLAB_USER_EMAIL\"}],\"subject\":\"Hello, Sendgrid!\"}],\"content\":[{\"type\":\"text\/plain\",\"value\":\"Hello from GitLab CI!\"}],\"from\":{\"email\":\"$VERIFIED_SENDGRID_SENDER\",\"name\":\"Your GitLab\"}}"
